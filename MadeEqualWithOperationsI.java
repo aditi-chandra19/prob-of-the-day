@@ -1,31 +1,43 @@
 public class MadeEqualWithOperationsI {
+    private static final int ENG_CHARS_NUM = 'z' - 'a' + 1;
+    private static final int EVEN = 0;
+    private static final int ODD = 1;
 
-    public static boolean check(String s1, String s2, int[] order) {
-        return s1.charAt(0) == s2.charAt(order[0]) &&
-               s1.charAt(1) == s2.charAt(order[1]) &&
-               s1.charAt(2) == s2.charAt(order[2]) &&
-               s1.charAt(3) == s2.charAt(order[3]);
+    public boolean checkStrings(String s1, String s2) {
+        int[] evenFreqDiff = computeFreqDiff(s1, s2, EVEN);
+        if (!hasOnlyZeros(evenFreqDiff)) {
+            return false;
+        }
+
+        int[] oddFreqDiff = computeFreqDiff(s1, s2, ODD);
+        return hasOnlyZeros(oddFreqDiff);
     }
 
-    public static boolean canBeEqual(String s1, String s2) {
-        if (check(s1, s2, new int[]{0, 1, 2, 3})) return true;
-        if (check(s1, s2, new int[]{2, 1, 0, 3})) return true;
-        if (check(s1, s2, new int[]{0, 3, 2, 1})) return true;
-        if (check(s1, s2, new int[]{2, 3, 0, 1})) return true;
-        return false;
+    private boolean hasOnlyZeros(int[] arr) {
+        for (int elem : arr) {
+            if (elem != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int[] computeFreqDiff(String s1, String s2, int start) {
+        int[] freq = new int[ENG_CHARS_NUM];
+        for (int i = start; i < s1.length(); i += 2) {
+            freq[s1.charAt(i) - 'a']++;
+            freq[s2.charAt(i) - 'a']--;
+        }
+        return freq;
     }
 
     public static void main(String[] args) {
+        MadeEqualWithOperationsI solution = new MadeEqualWithOperationsI();
 
-        String s1 = "abcd";
-        String s2 = "cdab";
+        String s1 = "abcdba";
+        String s2 = "cabdba";
 
-        boolean result = canBeEqual(s1, s2);
-
-        if (result) {
-            System.out.println("Yes, strings can be made equal.");
-        } else {
-            System.out.println("No, strings cannot be made equal.");
-        }
+        boolean result = solution.checkStrings(s1, s2);
+        System.out.println("Can the strings be made equal? " + result);
     }
 }
