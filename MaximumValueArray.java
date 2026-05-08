@@ -12,7 +12,7 @@ public class MaximumValueArray {
         for (int i = 1; i < n; i++) {
             preMax[i] = Math.max(preMax[i - 1], nums[i]);
         }
-
+MinimumJumpsUsingPrimeConnections.cpp
         int sufMin = Integer.MAX_VALUE;
 
         // Traverse from right to left
